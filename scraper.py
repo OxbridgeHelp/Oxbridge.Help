@@ -21,8 +21,9 @@ def get_ox_course_list():
 # gets the info for an oxford course in a tuple (university, course title, description, reqs)
 def ox_get_course_info(course_page):
     return ("University of Oxford", ox_get_name(course_page), ox_get_description(course_page), ox_get_requirements(course_page))
+# puts the info into a line for writing to the CSV
 def course_info_to_line(info):
-    return("\'" + info[0] + "\',\'" + info[1] + "\',\'" + info[2] + "\',\'" + info[3]+"\'")
+    return("\'" + info[0] + "\',\'" + info[1] + "\',\'" + info[2] + "\',\'" + info[3]+"\'\n")
 
 def ox_get_name(course_page):
     doc = pq(course_page)
@@ -31,7 +32,8 @@ def ox_get_name(course_page):
 def ox_get_description(course_page):
     doc = pq(course_page)
     body = doc('div.field-item.even').eq(0).children().children()
-    return (doc('div.ui-tabs-panel').find('p'))
+    returnval = (doc('div.ui-tabs-panel').find('p'))
+    return "placeholder description"
 
 def ox_get_requirements(course_page):
     doc = pq(course_page)
@@ -60,3 +62,11 @@ with urllib.request.urlopen(oxreq) as response:
    ox_page = response.read().decode()
 
 ox_course_list = get_ox_course_list()
+
+
+f = open('courses_data.csv', 'w')
+f.write(course_info_to_line(("university","course","description","requirements")))
+for x in ox_course_list:
+    f.write(course_info_to_line(ox_get_course_info(x)))
+
+    
