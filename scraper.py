@@ -3,6 +3,9 @@ from pyquery import PyQuery as pq
 import requests
 import sys
 
+def esc(string):
+    return string.replace("\"", "\"\"")
+
 # gets the link to each individial course in a list
 def get_ox_course_list():
     cl = []
@@ -23,7 +26,7 @@ def ox_get_course_info(course_page):
     return ("University of Oxford", ox_get_name(course_page), ox_get_description(course_page), ox_get_requirements(course_page))
 # puts the info into a line for writing to the CSV
 def course_info_to_line(info):
-    return("\'" + info[0] + "\',\'" + info[1] + "\',\'" + info[2] + "\',\'" + info[3]+"\'\n")
+    return("\"" + esc(info[0]) + "\",\"" + esc(info[1]) + "\",\"" + esc(info[2]) + "\",\"" + esc(info[3])+"\"\n")
 
 def ox_get_name(course_page):
     doc = pq(course_page)
