@@ -1,6 +1,7 @@
 import urllib.request
 from pyquery import PyQuery as pq
 import requests
+import sys
 
 # gets the link to each individial course in a list
 def get_ox_course_list():
@@ -17,9 +18,11 @@ def get_ox_course_list():
         cl.append("https:" + ox_page[index : i] + "?wssl=1")
     return cl
 
-# gets the info for an oxford course in a tuple (university, course title, description)
+# gets the info for an oxford course in a tuple (university, course title, description, reqs)
 def ox_get_course_info(course_page):
-    return ("University of Oxford", ox_get_name(course_page), ox_get_description(course_page))
+    return ("University of Oxford", ox_get_name(course_page), ox_get_description(course_page), ox_get_requirements(course_page))
+def course_info_to_line(info):
+    return("\'" + info[0] + "\',\'" + info[1] + "\',\'" + info[2] + "\',\'" + info[3]+"\'")
 
 def ox_get_name(course_page):
     doc = pq(course_page)
