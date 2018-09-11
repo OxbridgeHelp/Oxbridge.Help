@@ -1,4 +1,3 @@
-import urllib.request
 from pyquery import PyQuery as pq
 import requests
 import sys
@@ -13,9 +12,7 @@ def esc(string):
 def get_ox_course_list():
     cl = []
     index = 0
-    oxreq = urllib.request.Request(ox_page_url)
-    with urllib.request.urlopen(oxreq) as response:
-        ox_page = response.read().decode()
+    ox_page = get_page(ox_page_url).decode()
     section_end = len(ox_page)
     while (1):
         index = ox_page.find(ox_course_marker, index+1, section_end)
